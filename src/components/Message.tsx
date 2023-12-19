@@ -1,11 +1,21 @@
 import { SiOpenai } from "react-icons/si";
 import { HiUser } from "react-icons/hi";
 import { TbCursorText } from "react-icons/tb";
+<<<<<<< Updated upstream
 
 const Message = (props: any) => {
   const { message } = props;
   const { role, content: text } = message;
 
+=======
+import Markdown from 'react-markdown';
+import remarkGfm from 'remark-gfm'
+import {ChatLoading} from "@/components/Loading";
+
+const Message = (props: any) => {
+  const { message, isLoading, id, isLast } = props;
+  const { role, parts: text } = message;
+>>>>>>> Stashed changes
   const isUser = role === "user";
 
   return (
@@ -21,18 +31,25 @@ const Message = (props: any) => {
               {isUser ? (
                 <HiUser className="h-4 w-4 text-white" />
               ) : (
+<<<<<<< Updated upstream
                 <SiOpenai className="h-4 w-4 text-white" />
+=======
+                isLast && isLoading ? (
+                    <ChatLoading/>
+                ) : ( <BsRobot className="h-4 w-4 text-white" />)
+>>>>>>> Stashed changes
               )}
             </div>
-            <div className="text-xs flex items-center justify-center gap-1 absolute left-0 top-2 -ml-4 -translate-x-full group-hover:visible !invisible">
+            <div
+                className="text-xs flex items-center justify-center gap-1 absolute left-0 top-2 -ml-4 -translate-x-full group-hover:visible !invisible">
               <button
-                disabled
-                className="text-gray-300 dark:text-gray-400"
+                  disabled
+                  className="text-gray-300 dark:text-gray-400"
               ></button>
               <span className="flex-grow flex-shrink-0">1 / 1</span>
               <button
-                disabled
-                className="text-gray-300 dark:text-gray-400"
+                  disabled
+                  className="text-gray-300 dark:text-gray-400"
               ></button>
             </div>
           </div>
@@ -41,9 +58,22 @@ const Message = (props: any) => {
               <div className="min-h-20 flex flex-col items-start gap-4 whitespace-pre-wrap break-words">
                 <div className="markdown prose w-full break-words dark:prose-invert dark">
                   {!isUser && text === null ? (
-                    <TbCursorText className="h-6 w-6 animate-pulse" />
+                      <TbCursorText className="h-6 w-6 animate-pulse"/>
                   ) : (
+<<<<<<< Updated upstream
                     <p>{text}</p>
+=======
+                      text.startsWith('blob:') ? (
+                          <Image
+                              style={{maxWidth: "150px", margin: "5px"}}
+                              width="300" height="500"
+                              src={text}
+                        alt="Imagem"
+                      />
+                    ) : (
+                      <Markdown remarkPlugins={[remarkGfm]}>{text}</Markdown>
+                    )
+>>>>>>> Stashed changes
                   )}
                 </div>
               </div>

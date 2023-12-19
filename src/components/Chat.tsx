@@ -5,7 +5,15 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import useAnalytics from "@/hooks/useAnalytics";
 import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
 import Message from "./Message";
+<<<<<<< Updated upstream
 import { DEFAULT_OPENAI_MODEL } from "@/shared/Constants";
+=======
+import { GEMINI_PRO_MODEL, GEMINI_PRO_VISION_MODEL, GEMINI_MODELS } from "@/shared/Constants";
+import Image from "next/image";
+import gemini from "../services/gemini";
+import { tutorialTxt } from "@/utils/tutorialFirstAccess";
+import {ChatMessage} from "@/types/Model";
+>>>>>>> Stashed changes
 
 const Chat = (props: any) => {
   const { toggleComponentVisibility } = props;
@@ -34,6 +42,58 @@ const Chat = (props: any) => {
     }
   }, [conversation]);
 
+<<<<<<< Updated upstream
+=======
+  const [base64Images, setBase64Images] = useState<{ image: string, mimeType: string }[]>([]);
+
+  const getImageMimeType = (image: any): string => {
+    const blob = image instanceof Blob ? image : new Blob([image]);
+    const type = blob.type;
+    return type;
+  };
+
+  const convertImageToBase64 = (image: any): Promise<{ image: string, mimeType: string }> => {
+    return new Promise((resolve) => {
+
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const base64Image = e.target.result.replace(/^data:image\/[a-z]+;base64,/, '');
+        const mimeType = getImageMimeType(image);
+        resolve({
+          image: base64Image,
+          mimeType
+        })
+      };
+
+      reader.readAsDataURL(image);
+    });
+  };
+
+  const [inputImages, setInputImages] = useState<any[]>([]);
+
+  const handleChange = async (e: any) => {
+    if (e.target.files && e.target.files[0]) {
+      const images = [];
+      const inputImages = [];
+      for (const file of e.target.files) {
+        const base64 = await convertImageToBase64(file);
+        images.push(base64);
+        inputImages.push(URL.createObjectURL(file));
+      }
+      setBase64Images(images);
+      setInputImages(inputImages);
+    }
+  };
+
+  const fileInputRef = useRef<any>();
+
+  const handleFileButtonClick = (e: any) => {
+    e.preventDefault();
+    fileInputRef?.current?.click();
+  };
+
+>>>>>>> Stashed changes
   const sendMessage = async (e: any) => {
     e.preventDefault();
 
@@ -102,6 +162,23 @@ const Chat = (props: any) => {
     }
   };
 
+<<<<<<< Updated upstream
+=======
+  const [isOpen, setIsOpen] = useState(false);
+
+  const close = () => {
+    setIsOpen(false);
+  };
+
+  const onModelSelect = (model: any) => {
+    setSelectedModel(model);
+  }
+
+  const getLastIndexArray = (array: any, id: number): boolean => {
+    return array.length - 1 === id
+  }
+
+>>>>>>> Stashed changes
   return (
     <div className="flex max-w-full flex-1 flex-col">
       <div className="sticky top-0 z-10 flex items-center border-b border-white/20 bg-gray-800 pl-1 pt-1 text-gray-200 sm:pl-3 md:hidden">
@@ -123,9 +200,29 @@ const Chat = (props: any) => {
           <div className="react-scroll-to-bottom--css-ikyem-79elbk h-full dark:bg-gray-800">
             <div className="react-scroll-to-bottom--css-ikyem-1n7m0yu">
               {!showEmptyChat && conversation.length > 0 ? (
+<<<<<<< Updated upstream
                 <div className="flex flex-col items-center text-sm bg-gray-800">
                   <div className="flex w-full items-center justify-center gap-1 border-b border-black/10 bg-gray-50 p-3 text-gray-500 dark:border-gray-900/50 dark:bg-gray-700 dark:text-gray-300">
                     Model: {selectedModel.name}
+=======
+                  <div className="flex flex-col items-center text-sm bg-gray-800">
+                    <div
+                        className="flex w-full items-center justify-center gap-1 border-b border-black/10 bg-gray-50 p-3 text-gray-500 dark:border-gray-900/50 dark:bg-gray-700 dark:text-gray-300">
+                      Model: {selectedModel.name}
+                    </div>
+                    {conversation.map((message: ChatMessage, index: number) => (
+                      <Message
+                        key={index}
+                        id={index}
+                        message={message}
+                        isLoading={isLoading}
+                        isLast={getLastIndexArray(conversation, index)}
+                      />
+                    ))
+                    }
+                    <div ref={bottomOfChatRef}></div>
+                    <div className="w-full h-32 md:h-48 flex-shrink-0 bg-sky-900"></div>
+>>>>>>> Stashed changes
                   </div>
                   {conversation.map((message, index) => (
                     <Message key={index} message={message} />
