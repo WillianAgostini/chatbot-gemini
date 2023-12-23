@@ -4,13 +4,14 @@ import { BsChevronDown, BsPlusLg } from "react-icons/bs";
 import { RxHamburgerMenu } from "react-icons/rx";
 import useAutoResizeTextArea from "@/hooks/useAutoResizeTextArea";
 import Message from "./Message";
-import { GEMINI_PRO_MODEL, GEMINI_PRO_VISION_MODEL, GEMINI_MODELS } from "@/shared/Constants";
+import { GEMINI_PRO_MODEL, GEMINI_PRO_VISION_MODEL, GEMINI_MODELS, isGemini } from "@/shared/Constants";
 import Image from "next/image";
 import gemini from "../services/gemini";
+import openai from "../services/openai";
 import { tutorialTxt } from "@/utils/conversations/tutorialFirstAccess";
 import { Image64 } from "../types/Image";
 import { Conversation } from "@/types/Conversation";
-import { GeminiHandler } from "@/types/GeminiHandler";
+import { AIHandler } from "@/types/GeminiHandler";
 
 const Chat = (props: any) => {
   const { toggleComponentVisibility, I18nDictionary, apiKey, startCommand } = props;
@@ -130,13 +131,13 @@ const Chat = (props: any) => {
         message: { parts: message, role: "user", type: messageType },
         model: selectedModel,
         apiKey: apiKey || defaultApiKey,
-      } as GeminiHandler;
-
+      } as AIHandler;
 
       geminiHandler.hasImages = !!(geminiHandler.historyMessages.filter(x => x.image).length || geminiHandler.message.image);
       setSelectedModel(geminiHandler.hasImages ? GEMINI_PRO_VISION_MODEL : GEMINI_PRO_MODEL);
 
-      await gemini(geminiHandler, (text: string) => {
+      const handler = isGemini(geminiHandler.model.id) ? gemini : openai;
+      await handler(geminiHandler, (text: string) => {
         setConversation([
           ...conversation,
           message ? { parts: message, role: "user", type: messageType } : {},

@@ -1,6 +1,6 @@
 import { GEMINI_PRO_MODEL, GEMINI_PRO_VISION_MODEL } from "@/shared/Constants";
 import { Conversation } from "@/types/Conversation";
-import { GeminiHandler } from "@/types/GeminiHandler";
+import { AIHandler } from "@/types/GeminiHandler";
 import { AIModel } from "@/types/Model";
 import { Content, GenerateContentRequest, GenerativeContentBlob, GoogleGenerativeAI, InlineDataPart, InputContent, Part, TextPart } from "@google/generative-ai";
 
@@ -13,7 +13,7 @@ function fileToInlineDataPart(base64: string, mimeType: string) {
     };
 }
 
-export default async function handler(body: GeminiHandler, callback: any) {
+export default async function handler(body: AIHandler, callback: any) {
     try {
 
         const apiKey = body.apiKey;

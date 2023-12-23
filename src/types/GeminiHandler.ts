@@ -1,7 +1,7 @@
 import { Conversation } from "./Conversation";
 import { AIModel } from "./Model";
 
-export type GeminiHandler = {
+export type AIHandler = {
     apiKey: string;
     model: AIModel;
     historyMessages: Conversation[];
